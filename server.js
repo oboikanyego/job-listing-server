@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
+const { swaggerUi, swaggerSpec } = require('./config/swagger');
 
 dotenv.config();
 
@@ -10,11 +11,13 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:4200', credentials: true }));
 app.use(express.json());
 app.use(morgan('dev'));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
 const authRoutes = require('./routes/auth.routes');
 const jobRoutes = require('./routes/job.routes');
 const appRoutes = require('./routes/application.routes');
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
