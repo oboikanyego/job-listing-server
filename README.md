@@ -131,7 +131,3 @@ MIT License © Oboikanyego
 
 ---
 
-If you want, I can also **create a ready-to-use `.env.example` file** and **Swagger config file** to fully match this README so you can just drop them in your project.  
-
-Do you want me to do that?
-
