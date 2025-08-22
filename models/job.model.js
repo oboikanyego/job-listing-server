@@ -7,6 +7,7 @@ const jobSchema = new mongoose.Schema({
   category: { type: String, required: true },
   location: { type: String, default: 'Remote' },
   salary: { type: Number, default: 0 },
-}, { timestamps: true });
+}, { timestamps: true,
+  collection: 'jobs' });
 
 module.exports = mongoose.model('Job', jobSchema);

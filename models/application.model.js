@@ -5,6 +5,7 @@ const applicationSchema = new mongoose.Schema({
   candidateId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   coverLetter: { type: String, default: '' },
   status: { type: String, enum: ['submitted', 'reviewing', 'accepted', 'rejected'], default: 'submitted' }
-}, { timestamps: true });
+}, { timestamps: true,
+  collection: 'applications' });
 
 module.exports = mongoose.model('Application', applicationSchema);

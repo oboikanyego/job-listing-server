@@ -48,10 +48,19 @@
  *             type: object
  *             required: [name, email, password, role]
  *             properties:
- *               name: { type: string, example: John Doe }
- *               email: { type: string, example: johndoe@example.com }
- *               password: { type: string, example: strongPassword123 }
- *               role: { type: string, enum: [user, admin, employer], example: user }
+ *               name:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *               password:
+ *                 type: string
+ *                 example: strongPassword123
+ *               role:
+ *                 type: string
+ *                 enum: [user, admin, employer]
+ *                 example: user
  *     responses:
  *       200:
  *         description: User registered successfully and token returned
@@ -59,8 +68,10 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/AuthResponse'
- *       400: { description: Missing fields or email already in use }
- *       500: { description: Registration failed }
+ *       400:
+ *         description: Missing fields or email already in use
+ *       500:
+ *         description: Registration failed
  */
 
 /**
@@ -77,8 +88,12 @@
  *             type: object
  *             required: [email, password]
  *             properties:
- *               email: { type: string, example: johndoe@example.com }
- *               password: { type: string, example: strongPassword123 }
+ *               email:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *               password:
+ *                 type: string
+ *                 example: strongPassword123
  *     responses:
  *       200:
  *         description: User logged in successfully and token returned
@@ -86,6 +101,41 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/AuthResponse'
- *       400: { description: Invalid credentials }
- *       500: { description: Login failed }
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Login failed
+ */
+
+/**
+ * @swagger
+ * /api/auth/firebase-login:
+ *   post:
+ *     summary: Login using Firebase ID token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [token]
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 example: eyJhbGciOiJSUzI1NiIsImtpZCI6...
+ *     responses:
+ *       200:
+ *         description: Firebase login successful, returns JWT and user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Firebase authentication failed
  */

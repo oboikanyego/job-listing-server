@@ -11,7 +11,26 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:4200', credentials: true }));
 app.use(express.json());
 app.use(morgan('dev'));
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  '/api/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      docExpansion: 'none',
+      persistAuthorization: true,
+      urls: [
+        { url: '/api/docs.json', name: 'Job Listing API' },
+      ],
+    },
+  })
+);
+
+
+// Serve JSON directly (needed for Postman import / download)
+app.get('/api/docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // Routes
 const authRoutes = require('./routes/auth.routes');
