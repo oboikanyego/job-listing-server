@@ -45,12 +45,21 @@ app.use('/api/applications', appRoutes);
 app.get('/', (req, res) => res.send('Job Board API running'));
 
 const PORT = process.env.PORT || 5000;
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('✅ MongoDB connected');
-    app.listen(PORT, () => console.log(`🚀 Server listening on ${PORT}`));
-  })
-  .catch(err => {
-    console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1);
-  });
+const connectWithRetry = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("✅ MongoDB connected");
+
+    // Start server only after successful connection
+    app.listen(PORT, () =>
+      console.log(`🚀 Server listening on ${PORT}`)
+    );
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+    console.log("⏳ Retrying in 3 minutes...");
+    setTimeout(connectWithRetry, 2 * 60 * 1000); // Retry after 3 min
+  }
+};
+
+// Initial call
+connectWithRetry();
